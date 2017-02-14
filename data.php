@@ -1,6 +1,6 @@
 <?php
 
-$headers['Sensor'] = $_SERVER['HTTP_SENSOR'];
+$headers['X-Sensor'] = $_SERVER['HTTP_X_SENSOR'];
 $json = file_get_contents('php://input');
 
 $results = json_decode($json,true);
@@ -22,7 +22,7 @@ if (isset($values["temperature"]) && isset($values["humidity"])) { $has_dht = 1;
 if (isset($values["BMP_temperature"]) && isset($values["BMP_pressure"])) { $has_bmp = 1; } else { $has_bmp = 0; }
 
 // print transmitted values
-echo "Sensor: ".$headers['Sensor']."\r\n";
+echo "Sensor: ".$headers['X-Sensor']."\r\n";
 // if (isset($values["P1"])) echo "P1: ".$values["P1"]."\r\n";
 // if (isset($values["P2"])) echo "P2: ".$values["P2"]."\r\n";
 // if (isset($values["temperature"])) echo "DHT t: ".$values["temperature"]."\r\n";
@@ -87,7 +87,7 @@ if ($has_bmp) {
 // update ppd42ns rrd file
 if ($has_ppd42ns) {
 
-	$datafile = "data/data-".$headers['Sensor']."-ppd42ns-highres.rrd";
+	$datafile = "data/data-".$headers['X-Sensor']."-ppd42ns-highres.rrd";
 
 	if (!file_exists($datafile)) {
 		$opts = array(
@@ -120,7 +120,7 @@ if ($has_ppd42ns) {
 // update sds011 rrd file
 if ($has_sds011) {
 
-	$datafile = "data/data-".$headers['Sensor']."-sds011-highres.rrd";
+	$datafile = "data/data-".$headers['X-Sensor']."-sds011-highres.rrd";
 
 	if (!file_exists($datafile)) {
 		$opts = array(
@@ -153,7 +153,7 @@ if ($has_sds011) {
 // update dht rrd file
 if ($has_dht) {
 
-	$datafile = "data/data-".$headers['Sensor']."-dht-highres.rrd";
+	$datafile = "data/data-".$headers['X-Sensor']."-dht-highres.rrd";
 
 	if (!file_exists($datafile)) {
 		$opts = array(
@@ -186,7 +186,7 @@ if ($has_dht) {
 // update bmp rrd file
 if ($has_bmp) {
 
-	$datafile = "data/data-".$headers['Sensor']."-bmp-highres.rrd";
+	$datafile = "data/data-".$headers['X-Sensor']."-bmp-highres.rrd";
 
 	if (!file_exists($datafile)) {
 		$opts = array(
@@ -221,7 +221,7 @@ if (isset($values["min_micro"]) || isset($values["max_micro"])) {
 
 	$update_string = time().":".$values["min_micro"].":".$values["max_micro"];
 
-	$datafile = "data/data-".$headers['Sensor']."-time.rrd";
+	$datafile = "data/data-".$headers['X-Sensor']."-time.rrd";
 
 	if (!file_exists($datafile)) {
 		$opts = array(
@@ -255,7 +255,7 @@ if (isset($values["min_micro"]) || isset($values["max_micro"])) {
 }
 
 // save data values to CSV (one per day)
-$datafile = "data/data-".$headers['Sensor']."-".$today.".csv";
+$datafile = "data/data-".$headers['X-Sensor']."-".$today.".csv";
 
 if (!file_exists($datafile)) {
 	$outfile = fopen($datafile,"a");
